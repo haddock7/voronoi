@@ -2,7 +2,7 @@
 // MIT License: See https://github.com/gorhill/Javascript-Voronoi/LICENSE.md
 
 // Author: Przemyslaw Szczepaniak (przeszczep@gmail.com)
-// Port of Raymond Hill's (rhill@raymondhill.net) javascript implementation 
+// Port of Raymond Hill's (rhill@raymondhill.net) javascript implementation
 // of Steven  Forune's algorithm to compute Voronoi diagrams
 
 package voronoi
@@ -12,12 +12,12 @@ import "sort"
 // Cell of voronoi diagram
 type Cell struct {
 	// Site of the cell
-	Site Vertex
+	Site SiteVertex
 	// Array of halfedges sorted counterclockwise
 	Halfedges []*Halfedge
 }
 
-func newCell(site Vertex) *Cell {
+func newCell(site SiteVertex) *Cell {
 	return &Cell{Site: site}
 }
 

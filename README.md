@@ -5,17 +5,20 @@ efficiently compute Voronoi diagrams in Go language. Based on
 a Raymond Hill's javascript implementation 
 (https://raw.github.com/gorhill/Javascript-Voronoi).
 
+Forked from github.com/pzsz/voronoi. The only change is a new SiteVertex type that includes
+a user data type. Sites were defined by a Vertex struct on the original repository.
+
 ## Usage
 
 
-```
-import "github.com/pzsz/voronoi"
+```go
+import "github.com/haddock7/voronoi"
 
 func useVoronoi() {
-     	// Sites of voronoi diagram
-	sites := []voronoi.Vertex{
-		voronoi.Vertex{4, 5},
-		voronoi.Vertex{6, 5},
+    // Sites of voronoi diagram
+	sites := []SiteVertex{
+		{Vertex: Vertex{4, 5}},
+		{Vertex: Vertex{6, 5}},
 		...
 	}
 
@@ -24,7 +27,7 @@ func useVoronoi() {
 	bbox := NewBBox(0, 20, 0, 10)
 
 	// Compute diagram and close cells (add half edges from bounding box)
-	diagram := NewVoronoi().Compute(sites, bbox, true)
+	diagram := NewVoronoi().ComputeDiagram(sites, bbox, true)
 
 	// Iterate over cells
 	for _, cell := diagram.Cells {

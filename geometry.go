@@ -1,7 +1,7 @@
 // MIT License: See https://github.com/pzsz/voronoi/LICENSE.md
 
 // Author: Przemyslaw Szczepaniak (przeszczep@gmail.com)
-// Port of Raymond Hill's (rhill@raymondhill.net) javascript implementation 
+// Port of Raymond Hill's (rhill@raymondhill.net) javascript implementation
 // of Steven Forune's algorithm to compute Voronoi diagrams
 
 package voronoi
@@ -16,11 +16,16 @@ type Vertex struct {
 	Y float64
 }
 
+type SiteVertex struct {
+	Vertex
+	Data interface{}
+}
+
 // Vertex representing lack of vertex (or bad vertex)
 var NO_VERTEX = Vertex{math.Inf(1), math.Inf(1)}
 
 // For sort interface
-type Vertices []Vertex
+type Vertices []SiteVertex
 
 func (s Vertices) Len() int      { return len(s) }
 func (s Vertices) Swap(i, j int) { s[i], s[j] = s[j], s[i] }

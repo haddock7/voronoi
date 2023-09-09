@@ -7,9 +7,8 @@
 package utils
 
 import (
-	"github.com/pzsz/voronoi"
+	"github.com/haddock7/voronoi"
 )
-
 
 // Apply lloyd relaxation algorithm to the cells.
 func LloydRelaxation(cells []*voronoi.Cell) (ret []voronoi.Vertex) {

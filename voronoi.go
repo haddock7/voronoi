@@ -1,14 +1,16 @@
 // MIT License: See https://github.com/pzsz/voronoi/LICENSE.md
 
 // Author: Przemyslaw Szczepaniak (przeszczep@gmail.com)
-// Port of Raymond Hill's (rhill@raymondhill.net) javascript implementation 
+// Port of Raymond Hill's (rhill@raymondhill.net) javascript implementation
 // of Steven Forune's algorithm to compute Voronoi diagrams
 
 package voronoi
 
-import "math"
-import "sort"
-import "fmt"
+import (
+	"fmt"
+	"math"
+	"sort"
+)
 
 type Voronoi struct {
 	cells []*Cell
@@ -515,7 +517,7 @@ func (s *Voronoi) attachCircleEvent(arc *Beachsection) {
 	// Important: ybottom should always be under or at sweep, so no need
 	// to waste CPU cycles by checking
 
-	// recycle circle event object if possible	
+	// recycle circle event object if possible
 	circleEventInst := &circleEvent{
 		arc:     arc,
 		site:    cSite,
@@ -582,8 +584,9 @@ func NewBBox(xl, xr, yt, yb float64) BBox {
 // connect dangling edges (not if a cursory test tells us
 // it is not going to be visible.
 // return value:
-//   false: the dangling endpoint couldn't be connected
-//   true: the dangling endpoint could be connected
+//
+//	false: the dangling endpoint couldn't be connected
+//	true: the dangling endpoint could be connected
 func connectEdge(edge *Edge, bbox BBox) bool {
 	// skip if end point already connected
 	vb := edge.Vb.Vertex
@@ -696,8 +699,10 @@ func connectEdge(edge *Edge, bbox BBox) bool {
 }
 
 // line-clipping code taken from:
-//   Liang-Barsky function by Daniel White
-//   http://www.skytopia.com/project/articles/compsci/clipping.html
+//
+//	Liang-Barsky function by Daniel White
+//	http://www.skytopia.com/project/articles/compsci/clipping.html
+//
 // Thanks!
 // A bit modified to minimize code paths
 func clipEdge(edge *Edge, bbox BBox) bool {
@@ -768,7 +773,7 @@ func clipEdge(edge *Edge, bbox BBox) bool {
 			t0 = r
 		}
 	}
-	// bottom        
+	// bottom
 	q = bbox.Yb - ay
 	if dy == 0 && q < 0 {
 		return false
@@ -920,7 +925,7 @@ func (s *Voronoi) closeCells(bbox BBox) {
 				halfedges = cell.Halfedges
 				nHalfedges = len(halfedges)
 
-				copy(halfedges[iLeft+2:len(halfedges)], halfedges[iLeft+1:len(halfedges)-1])
+				copy(halfedges[iLeft+2:], halfedges[iLeft+1:len(halfedges)-1])
 				halfedges[iLeft+1] = newHalfedge(edge, cell, nil)
 
 			}
@@ -951,9 +956,9 @@ func (s *Voronoi) gatherVertexEdges() {
 	}
 }
 
-// Compute voronoi diagram. If closeCells == true, edges from bounding box will be 
+// Compute voronoi diagram. If closeCells == true, edges from bounding box will be
 // included in diagram.
-func ComputeDiagram(sites []Vertex, bbox BBox, closeCells bool) *Diagram {
+func ComputeDiagram(sites []SiteVertex, bbox BBox, closeCells bool) *Diagram {
 	s := &Voronoi{
 		cellsMap: make(map[Vertex]*Cell),
 	}
@@ -961,7 +966,7 @@ func ComputeDiagram(sites []Vertex, bbox BBox, closeCells bool) *Diagram {
 	// Initialize site event queue
 	sort.Sort(VerticesByY{sites})
 
-	pop := func() *Vertex {
+	pop := func() *SiteVertex {
 		if len(sites) == 0 {
 			return nil
 		}
@@ -992,9 +997,9 @@ func ComputeDiagram(sites []Vertex, bbox BBox, closeCells bool) *Diagram {
 				// first create cell for new site
 				nCell := newCell(*site)
 				s.cells = append(s.cells, nCell)
-				s.cellsMap[*site] = nCell
+				s.cellsMap[site.Vertex] = nCell
 				// then create a beachsection for that site
-				s.addBeachsection(*site)
+				s.addBeachsection(site.Vertex)
 				// remember last site coords to detect duplicate
 				xsitey = site.Y
 				xsitex = site.X
